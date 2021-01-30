@@ -1,0 +1,85 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using Core.Domain.Model;
+using Core.Domain.Model.TodoLists;
+using Core.Domain.Model.Todos;
+using Presentation.Web.Models.Display;
+using Presentation.Web.Models.Input;
+
+namespace Presentation.Web.Controllers
+{
+    public class TodoListsController : ControllerBase
+    {
+        private IRepository<TodoList> _repo;
+
+        public TodoListsController(IRepository<TodoList> repo)
+        {
+            _repo = repo;
+        }
+
+        [Authorize]
+        public IEnumerable<TodoListDisplay> Get()
+        {
+
+            return null;
+            //var todos = _repo.FindBy(x => x.Owner == LoadUser());
+            //var displays = todos.Select(x => new TodoListDisplay()
+            //    {
+            //        Name = x.Name,
+            //        Id = x.Id,
+            //        Todos = x.Todos.Select(t => new TodoDisplay() { Id = t.Id, Title = t.Title, Completed = t.Completed, Position = t.Position }).OrderBy(t => t.Position).ToList()
+            //    }).ToList();
+            //return displays;
+        }
+
+        [Authorize]
+        [HttpPost]
+        public HttpResponseMessage Post(TodoListInput list)
+        {
+            return null;
+            //var entity = new TodoList()
+            //    {
+            //        Name = list.Name,
+            //        Owner = LoadUser()
+            //    };
+            //_repo.Store(entity);
+            //return Request.CreateResponse(HttpStatusCode.OK, new TodoListDisplay() { Name = entity.Name, Id = entity.Id });
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public HttpResponseMessage Delete(long Id)
+        {
+            var list = _repo.Load(Id);
+            _repo.Delete(list);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public HttpResponseMessage Todos(long Id, TodoInput todoInput)
+        {
+            //var list = _repo.Get(Id);
+            //var todo = new Todo() { Title = todoInput.Title, Completed = false, Position = list.Todos.Count };
+            //list.AddTodo(todo);
+            //_repo.Store(list);
+            return Request.CreateResponse(HttpStatusCode.OK, new TodoDisplay { /*Title = todoInput.Title, Id = todo.Id, Completed = false, Position = todo.Position */});
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IEnumerable<TodoDisplay> Todos(long Id)
+        {
+
+            return null;
+
+            //var list = _repo.Get(Id);
+            //return
+            //    list.Todos.Select(t => new TodoDisplay() { Id = t.Id, Title = t.Title, Completed = t.Completed, Position = t.Position }).ToList();
+            //;
+        }
+    }
+}
