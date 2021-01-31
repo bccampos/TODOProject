@@ -14,6 +14,8 @@ namespace Repository.Entities
 
         public User Owner { get; set; }
 
-        public DateTime LastUpdate { get; set; }
+        public DateTime Date { get; set; }
+
+        public virtual ICollection<Todo> Todos { get; set; }
     }
 }

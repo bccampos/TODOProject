@@ -1,60 +1,63 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
-using Core.Domain.Model;
-using Core.Domain.Model.TodoLists;
-using Core.Domain.Model.Todos;
+using Core.Interface;
 using Presentation.Web.Models.Display;
 using Presentation.Web.Models.Input;
+using Repository.Entities;
 
 namespace Presentation.Web.Controllers
 {
     public class TodoListsController : ControllerBase
     {
-        private IRepository<TodoList> _repo;
+        protected readonly IUserTaskService _userTaskService;
 
-        public TodoListsController(IRepository<TodoList> repo)
+        public TodoListsController(IUserTaskService userTaskService)
         {
-            _repo = repo;
+            _userTaskService = userTaskService;
         }
 
         [Authorize]
-        public IEnumerable<TodoListDisplay> Get()
+        public async Task<IEnumerable<TodoListDisplay>> Get()
         {
+            int id = 0;
+            int.TryParse(User.Identity.Name, out id);
 
-            return null;
-            //var todos = _repo.FindBy(x => x.Owner == LoadUser());
-            //var displays = todos.Select(x => new TodoListDisplay()
-            //    {
-            //        Name = x.Name,
-            //        Id = x.Id,
-            //        Todos = x.Todos.Select(t => new TodoDisplay() { Id = t.Id, Title = t.Title, Completed = t.Completed, Position = t.Position }).OrderBy(t => t.Position).ToList()
-            //    }).ToList();
-            //return displays;
+            var todos = await _userTaskService.GetUserTasks(id);
+
+
+            var displays = todos.Select(x => new TodoListDisplay()
+            {
+                Name = x.Name,
+                Id = x.Id,
+                Todos = x.Todos.Select(t => new TodoDisplay() { Id = t.Id, Title = t.Title, Completed = t.Completed, Position = t.Position }).OrderBy(t => t.Position).ToList()
+            }).ToList();
+
+            return displays;
         }
 
         [Authorize]
         [HttpPost]
-        public HttpResponseMessage Post(TodoListInput list)
+        public async Task<HttpResponseMessage> Post(TodoListInput list)
         {
-            return null;
-            //var entity = new TodoList()
-            //    {
-            //        Name = list.Name,
-            //        Owner = LoadUser()
-            //    };
-            //_repo.Store(entity);
-            //return Request.CreateResponse(HttpStatusCode.OK, new TodoListDisplay() { Name = entity.Name, Id = entity.Id });
+            int id = 0;
+            int.TryParse(User.Identity.Name, out id);
+
+            await _userTaskService.CreateUserTask(id, list.Name);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new TodoListDisplay() { Name = list.Name, Id = id });
         }
 
         [Authorize]
         [HttpDelete]
         public HttpResponseMessage Delete(long Id)
         {
-            var list = _repo.Load(Id);
-            _repo.Delete(list);
+            //var list = _repo.Load(Id);
+            //_repo.Delete(list);
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 

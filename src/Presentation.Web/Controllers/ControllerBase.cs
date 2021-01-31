@@ -1,20 +1,21 @@
-﻿using System.Web.Http;
-using Core.Domain.Model;
-using Core.Domain.Model.Users;
+﻿using System.Threading.Tasks;
+using System.Web.Http;
+using Core.Interface;
 using Ninject;
+using Repository.Entities;
 
 namespace Presentation.Web.Controllers
 {
     public class ControllerBase : ApiController
     {
         [Inject]
-        public IRepository<User> UserRepo { get; set; }
+        public IUserTaskService userTaskService { get; set; }
 
-        protected User LoadUser()
+        protected async Task<User> LoadUser()
         {
-            long id = 0;
-            long.TryParse(User.Identity.Name, out id);
-            return UserRepo.Load(id);
+            int id = 0;
+            int.TryParse(User.Identity.Name, out id);
+            return await userTaskService.GetUserById(id);
         }
     }
 }

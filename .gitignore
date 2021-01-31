@@ -147,3 +147,7 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+/.vs/ProjectTODO/v15/Server/sqlite3/storage.ide-wal
+/.vs/ProjectTODO/v15/Server/sqlite3/storage.ide-shm
+/.vs/ProjectTODO/v15/Server/sqlite3/storage.ide
+/.vs/ProjectTODO/v15/Server/sqlite3/db.lock

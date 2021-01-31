@@ -11,13 +11,15 @@ namespace Core
 {
     public class UserTaskService : IUserTaskService
     {
-        private readonly ITodoListRepository _userTaskRepository;
-        private readonly IUserRepository _userRepository;
+        protected readonly ITodoListRepository _userTaskRepository;
+        protected readonly IUserRepository _userRepository;
+        protected readonly ITodoRepository _todoRepository;
 
-        public UserTaskService(ITodoListRepository userTaskRepository, IUserRepository userRepository)
+        public UserTaskService(ITodoListRepository userTaskRepository, IUserRepository userRepository, ITodoRepository todoRepository)
         {
             _userTaskRepository = userTaskRepository;
             _userRepository = userRepository;
+            _todoRepository = todoRepository;
         }
 
         public async Task<int> CreateUserTask(int userId, string description)
@@ -32,7 +34,7 @@ namespace Core
             var newTaskId = _userTaskRepository.Create(new TodoList()
             {
                 Name = description,
-                LastUpdate = DateTime.UtcNow,
+                Date = DateTime.UtcNow,
                 Owner = user
             });
 
@@ -74,6 +76,11 @@ namespace Core
         {
             return Task.FromResult(_userRepository.Create(user));
         }
+
+        //public Task<IEnumerable<Todo>> GetTodoTasks(int userId)
+        //{
+        //    return Task.FromResult(_todoRepository.List().Where(userTask => userTask..Id == userId).AsEnumerable());
+        //}
 
     }
 }

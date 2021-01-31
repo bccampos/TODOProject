@@ -1,6 +1,8 @@
 ﻿using Repository.Entities;
 using Repository.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Repository
 {
@@ -12,23 +14,33 @@ namespace Repository
 
         public DbContext()
         {
-            if (Users == null)
+            // Singleton call
+
+            Users = new List<User>()
             {
-                Users = new List<User>()
+                new User()
                 {
-                    new User()
-                    {
-                        Id = 1,
-                        Name = "bruno",
-                        Email = "bruno@test.ie",
-                        Password = "123",
-                        Lists = new List<TodoList>()
-                    }
-                };
-            }
+                    Id = 1,
+                    Name = "bruno",
+                    Email = "bruno@test.ie",
+                    Password = "123",
+                    Lists = new List<TodoList>()
+                }
+            };
+
+            TodoList = new List<TodoList>()
+            {
+                new TodoList()
+                {
+                   Id = 1,
+                   Name = "Task Default",
+                   Owner = Users.First(),
+                   Date = DateTime.UtcNow,
+                   Todos = new List<Todo>()
+                }
+            };
 
             Todo = new List<Todo>();
-            TodoList = new List<TodoList>();
         }
 
     }

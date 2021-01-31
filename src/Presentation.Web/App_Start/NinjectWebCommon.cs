@@ -65,11 +65,12 @@ namespace Presentation.Web.App_Start
            // kernel.Load(new NHibernateModule());
             //kernel.Load(new MigrationsModule());
 
-            kernel.Bind<IDbContext>().To<DbContext>().InSingletonScope();
-            kernel.Bind<IUserRepository>().To<UserRepository>();
-            kernel.Bind<ITodoListRepository>().To<TodoListRepository>();
+            kernel.Bind<IDbContext>().ToConstant(new DbContext());
+
+            kernel.Bind<IUserRepository>().To<UserRepository>(); 
+            kernel.Bind<ITodoListRepository>().To<TodoListRepository>(); 
             kernel.Bind<ITodoRepository>().To<TodoRepository>();
-            kernel.Bind<IUserTaskService>().To<UserTaskService>();
+            kernel.Bind<IUserTaskService>().To<UserTaskService>(); 
 
             kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
         }        

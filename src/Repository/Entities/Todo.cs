@@ -17,5 +17,9 @@ namespace Repository.Entities
         public TodoList List { get; set; }
 
         public long Position { get; set; }
+
+        public DateTime Date { get; set; }
+
+
     }
 }

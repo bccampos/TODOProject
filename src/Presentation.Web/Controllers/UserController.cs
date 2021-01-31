@@ -12,13 +12,11 @@ namespace Presentation.Web.Controllers
 {
     public class UserController : Controller
     {
-        //protected IRepository<User> Users;
         protected IAuthenticationService Auth;
-        private readonly IUserTaskService _userTaskService;
+        protected readonly IUserTaskService _userTaskService;
 
         public UserController(IAuthenticationService auth, IUserTaskService userTaskService)
         {
-           // Users = users;
             Auth = auth;
             _userTaskService = userTaskService;
         }
